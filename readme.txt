@@ -12,23 +12,9 @@ Delete Post Meta based on meta key.
 
 Delete Post Meta based on meta key. Wrapper and admin panel for [delete_metadata](https://developer.wordpress.org/reference/functions/delete_metadata/).
 
+You can select the object type you want to search to delete meta data. Default to `post`.
+
 WARNING! Use this plugin with caution. It will delete all post meta based on a meta key.
-
-## Filter Object Type
-
-Add the following to your `functions.php` or equivalent send a different object type.
-
-```php
-
-add_filter(
-    'delete_post_meta_key_object_type',
-    function ( $object_type ){
-        // Accepts 'post', 'comment', 'term', 'user', or any other object type with an associated meta table.
-        return 'user';
-    }
-);
-
-```
 
 == Screenshots ==
 
