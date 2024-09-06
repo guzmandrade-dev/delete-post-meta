@@ -3,7 +3,7 @@
  * Plugin Name:       Delete Post Meta
  * Plugin URI:        https://github.com/guzmandrade-wds/delete-post-meta
  * Description:       Delete Post Meta based on meta key.
- * Version:           1.1.2
+ * Version:           1.2.0
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            Mauricio Andrade
@@ -14,7 +14,8 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	// Exit if accessed directly.
+	exit;
 }
 
 // Wait for plugins to be loaded before registering actions to validate admin access.
@@ -34,7 +35,7 @@ function delete_post_meta_init() {
 /**
  * Registers a submenu page for the 'tools.php' admin page.
  *
- * @return null
+ * @return void
  */
 function delete_post_meta_submenu() {
 	add_submenu_page(
@@ -48,27 +49,50 @@ function delete_post_meta_submenu() {
 }
 
 /**
+ * Returns an array of all object types that have an associated meta table.
+ *
+ * @return array
+ */
+function delete_post_meta_get_object_types() {
+	// Get all registered post types.
+	$post_types = get_post_types( array(), 'names' );
+
+	// Default object types.
+	$object_types = array_merge( $post_types, array( 'comment', 'term', 'user' ) );
+
+	foreach ( $object_types as $type ) {
+		$table = _get_meta_table( $type );
+		if ( ! $table ) {
+			unset( $object_types[ $type ] );
+		}
+	}
+
+	return $object_types;
+}
+
+/**
  * Main callback function. If the delete_post_meta_key_search value is not false, it calls `delete_metadata` to delete all post meta based on the meta key.
  *
- * @return null
+ * @return void
  */
 function delete_post_meta_callback() {
-	global $wpdb;
 	if ( isset( $_POST['delete_post_meta_nonce'] )
 		&& check_admin_referer( 'delete_post_meta_action', 'delete_post_meta_nonce' )
 	) {
-		$meta_key_search = isset( $_POST['delete_post_meta_key_search'] ) ? sanitize_text_field( $_POST['delete_post_meta_key_search'] ) : false;
+		$meta_key_search = isset( $_POST['delete_post_meta_key_search'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_post_meta_key_search'] ) ) : false;
+		$object_type     = isset( $_POST['delete_post_meta_object_type'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_post_meta_object_type'] ) ) : 'post';
 		if ( $meta_key_search ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery -- We delete directly from the database, so we don't handle possible filters applying to it.
-			$wpdb->query(
-				$wpdb->prepare(
-					"DELETE from $wpdb->postmeta
-					WHERE meta_key = %s",
-					$meta_key_search,
-				)
-			);
+			/**
+			 * More info at:
+			 *
+			 * @link https://developer.wordpress.org/reference/functions/delete_metadata/
+			 * Accepts 'post', 'comment', 'term', 'user', or any other object type with an associated meta table.
+			 */
+			delete_metadata( $object_type, 0, $meta_key_search, null, true );
 		}
 	}
+
+	$object_types = delete_post_meta_get_object_types();
 	?>
 	<div class="wrap"><div id="icon-tools" class="icon32"></div>
 		<h2><?php esc_html_e( 'Delete Post Meta', 'delete-post-meta' ); ?></h2>
@@ -77,6 +101,14 @@ function delete_post_meta_callback() {
 		</div>
 		<form method="post">
 			<?php wp_nonce_field( 'delete_post_meta_action', 'delete_post_meta_nonce' ); ?>
+			<label for="delete_post_meta_object_type">Select Object Type: </label>
+			<select name="delete_post_meta_object_type" id="delete_post_meta_object_type">
+				<?php foreach ( $object_types as $object_type ) : ?>
+					<option value="<?php echo esc_attr( $object_type ); ?>" <?php selected( $object_type, 'post' ); ?>>
+						<?php echo esc_html( ucfirst( $object_type ) ); ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
 			<label for="delete_post_meta_key_search">Meta Key:</label>
 			<input name="delete_post_meta_key_search" id="delete_post_meta_key_search" type="text" />
 

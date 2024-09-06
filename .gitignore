@@ -1,2 +1,5 @@
 delete-post-meta.zip
 /delete-post-meta
+
+composer.lock
+/vendor/
