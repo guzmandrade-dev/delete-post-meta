@@ -30,3 +30,4 @@ wp-cli.local.yml
 delete-post-meta
 .wp-env.json
 .vscode
+vendor
