@@ -27,7 +27,9 @@ tests
 Thumbs.db
 wp-cli.local.yml
 
-delete-post-meta
 .wp-env.json
 .vscode
+blueprint.json
 vendor
+dist
+build.sh

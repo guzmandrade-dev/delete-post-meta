@@ -1,12 +1,12 @@
 === Delete Post Meta ===
 Contributors: h4l9k
 Tags: delete-post-meta, remove-post-meta, delete-meta-data, meta-data
-Tested up to: 6.6
+Tested up to: 6.9
 Stable tag: 1.2.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Delete Post Meta based on meta key.
+Delete post meta based on meta key.
 
 == Description ==
 
