@@ -1,5 +1,5 @@
 {
-    "$schema": "https://raw.githubusercontent.com/WordPress/gutenberg/wp/7.0/schemas/json/wp-env.json",
+    "$schema": "https://schemas.wp.org/wp/7.0/wp-env.json",
     "testsEnvironment": false,
     "plugins": [
         "https://downloads.wordpress.org/plugin/plugin-check.zip"
