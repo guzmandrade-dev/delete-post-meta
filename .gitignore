@@ -1,2 +1,6 @@
-delete-post-meta.zip
-/delete-post-meta
+
+composer.lock
+/vendor/
+/dist/delete-post-meta.zip
+/dist/delete-post-meta
+!/dist/.gitkeep

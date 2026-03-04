@@ -1,0 +1,22 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/wp-admin/tools.php?page=delete-post-meta",
+  "steps": [
+    {
+      "step": "login",
+      "username": "admin",
+      "password": "password"
+    },
+    {
+      "step": "installPlugin",
+      "pluginZipFile": {
+        "resource": "wordpress.org/plugins",
+        "slug": "delete-post-meta"
+      }
+    },
+    {
+      "step": "activatePlugin",
+      "pluginPath": "delete-post-meta/delete-post-meta.php"
+    }
+  ]
+}
