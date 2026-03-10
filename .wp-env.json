@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schemas.wp.org/wp/7.0/wp-env.json",
+    "$schema": "https://schemas.wp.org/trunk/wp-env.json",
     "testsEnvironment": false,
     "plugins": [
         "https://downloads.wordpress.org/plugin/plugin-check.zip"
